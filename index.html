@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three.js Test!</title>
+</head>
+<body>
+  <!-- here we link the library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
+  <script type="module">
+    import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
+    var camera, scene, renderer, directionalLight, light,
+    geometry, material, mesh, keyLight, fillLight, backLight, controls
+    
+    init();
+    animate();
+    
+    function init() {
+        // Three.js documentation is great
+
+        // Here we create a new scene
+        scene = new THREE.Scene();
+
+        // Here we set up the location of the camera
+        // PerspectiveCamera( fov : Number, aspect : Number, near : Number, far : Number )
+        // PerspectiveCamera parameters: field of view, aspect ratio, near, far
+        // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+        // camera.position.z = 1000;
+        var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+
+        // BoxGeometry is a geometry class for a rectangular cuboid with a given 'width', 'height', and 'depth'. 
+        // On creation, the cuboid is centred on the origin, with each edge parallel to one of the axes.
+        // geometry = new THREE.BoxGeometry(200, 200, 200); // Cube
+        geometry = new THREE.SphereGeometry( 200, 15, 15 ); // Sphere
+
+        // A material for drawing geometries in a simple shaded (flat or wireframe) way.
+        // material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true }); // Red, with a wireframe material
+        // material = new THREE.MeshBasicMaterial({ color: 0x0000ff, flat: true }); // Blue, with a flat material
+        material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
+    
+        // material = new THREE.MeshStandardMaterial({
+        //   metalness: 1,   // between 0 and 1
+        //   roughness: 0.7 // between 0 and 1
+        //   // envMap: envMap if there's a environment map, I think like a sky box for reflections
+        // })
+        
+        // Like we've discussed => Geometry + Material
+        mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh); 
+
+        // Light directly downwards
+        // var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.9 );
+        // scene.add( directionalLight );
+
+        // 3 lights below are together
+        var keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
+        keyLight.position.set(-100, 0, 100);
+        
+        var fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
+        fillLight.position.set(100, 0, 100);
+
+        var backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        backLight.position.set(100, 0, -100).normalize();
+
+        scene.add(keyLight);
+        scene.add(fillLight);
+        scene.add(backLight);
+
+        // Controls with mouse
+        // var controls = new THREE.OrbitControls(camera, renderer.domElement);
+        // controls.enableDamping = true;
+        // controls.dampingFactor = 0.25;
+        // controls.enableZoom = true;
+
+        var controls = new OrbitControls( camera, renderer.domElement );
+        camera.position.set( 0, 20, 100 );
+        controls.update();
+
+        // // another light example
+        // var light = new THREE.DirectionalLight( 0xffffff );
+        // light.position.set( 0, 1, 1 ).normalize();
+        // scene.add(light); 
+
+        // There's our guy WebGL
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+    }
+    
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        render();
+    }
+    
+    function render() {
+        // mesh.rotation.x += 0.01;
+        // mesh.rotation.y += 0.02;
+    
+        renderer.render(scene, camera);
+    }
+
+    // I don't understand below, but it keeps the object in the centre even when resizing the browser window
+    function onWinderResize() {
+      camera.aspect = window.innerWidth / window.innerHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+
+    window.addEventListener('resize', onWinderResize, false)
+
+    </script>
+  </body>
+</html>
