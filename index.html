@@ -12,6 +12,10 @@
     var camera, scene, renderer, directionalLight, light,
     geometry, material, mesh, keyLight, fillLight, backLight, controls
     
+    // State
+    var mouseX = ((window.innerWidth * 7) / 8 - window.innerWidth / 2) / 2 // 'Thoughtful'
+    var mouseY = ((window.innerWidth * 1) / 6 - window.innerHeight / 2) / 2 // initial pose
+
     init();
     animate();
     
@@ -70,10 +74,13 @@
     
     function animate() {
         requestAnimationFrame(animate);
+        mesh.rotation.x += (mouseX / 500 - 0.15 - mesh.rotation.x) * 0.3
         render();
     }
     
     function render() {
+        camera.position.x += (mouseX * 4 - camera.position.x) * 0.3
+        camera.lookAt(scene.position)
         mesh.rotation.x += 0.01;
         mesh.rotation.y += 0.02;
     
@@ -87,7 +94,10 @@
     }
 
     window.addEventListener('resize', onWinderResize, false)
-
+    window.addEventListener("mousemove", (event) => {
+        mouseX = (event.clientX - window.innerWidth / 2) / 2
+        mouseY = (event.clientY - window.innerHeight / 2) / 2
+      })
     </script>
   </body>
 </html>
