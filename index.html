@@ -9,13 +9,13 @@
   <!-- here we link the library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
   <script type="module">
-    var camera, scene, renderer, directionalLight, light,
-    geometry, material, mesh, keyLight, fillLight, backLight, controls
+    var camera, scene, renderer, directionalLight, light, geometry, material, mesh, keyLight, 
+        fillLight, backLight, controls, wireframe, flat, phong
     
     // State
     var mouseX = ((window.innerWidth * 7) / 8 - window.innerWidth / 2) / 2 // 'Thoughtful'
     var mouseY = ((window.innerWidth * 1) / 6 - window.innerHeight / 2) / 2 // initial pose
-
+    var currentMaterial = "wireframe"
     init();
     animate();
     
@@ -38,9 +38,9 @@
         geometry = new THREE.SphereGeometry( 200, 15, 15 ); // Sphere
 
         // A material for drawing geometries in a simple shaded (flat or wireframe) way.
-        // material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true }); // Red, with a wireframe material
-        // material = new THREE.MeshBasicMaterial({ color: 0x0000ff, flat: true }); // Blue, with a flat material
-        material = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
+        wireframe = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+        flat = new THREE.MeshBasicMaterial({ color: 0x0000ff, flat: true });
+        phong = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
     
         // material = new THREE.MeshStandardMaterial({
         //   metalness: 1,   // between 0 and 1
@@ -49,7 +49,7 @@
         // })
         
         // Like we've discussed => Geometry + Material
-        mesh = new THREE.Mesh(geometry, material);
+        mesh = new THREE.Mesh(geometry, wireframe);
         scene.add(mesh); 
 
         // 3 lights below are together
@@ -97,6 +97,19 @@
     window.addEventListener("mousemove", (event) => {
         mouseX = (event.clientX - window.innerWidth / 2) / 2
         mouseY = (event.clientY - window.innerHeight / 2) / 2
+      })
+    window.addEventListener("click", (event) => {
+        console.log('test');
+        if (currentMaterial == "wireframe") {
+          currentMaterial = "phong"
+          mesh.material = phong
+        } else if (currentMaterial == "phong") {
+          currentMaterial = "flat"
+          mesh.material = flat
+        } else if (currentMaterial == "flat") {
+          currentMaterial = "wireframe"
+          mesh.material = wireframe
+        }
       })
     </script>
   </body>
