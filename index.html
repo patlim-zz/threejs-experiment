@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Three.js Test!</title>
 </head>
-<body>
-  <!-- here we link the library -->
+<body style="margin: 0;">
+  <div style="position: absolute; color: white; left: 30px; font-family: Helvetica;">
+    <h1>Click to change object's material!</h1>
+    <p>Material is <strong id="currentMaterial"></strong></p>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
   <script type="module">
     var camera, scene, renderer, directionalLight, light, geometry, material, mesh, keyLight, 
@@ -20,6 +23,7 @@
     animate();
     
     function init() {
+        document.getElementById("currentMaterial").innerHTML = "wireframe";
         // Three.js documentation is great
 
         // Here we create a new scene
@@ -110,6 +114,7 @@
           currentMaterial = "wireframe"
           mesh.material = wireframe
         }
+      document.getElementById("currentMaterial").innerHTML = currentMaterial;
       })
     </script>
   </body>
