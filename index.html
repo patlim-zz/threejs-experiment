@@ -13,7 +13,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
   <script type="module">
     var camera, scene, renderer, directionalLight, light, geometry, material, mesh, keyLight, 
-        fillLight, backLight, controls, wireframe, flat, phong
+        fillLight, backLight, controls, wireframe, flat, phong, metal
     
     // State
     var mouseX = ((window.innerWidth * 7) / 8 - window.innerWidth / 2) / 2 // 'Thoughtful'
@@ -45,12 +45,8 @@
         wireframe = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
         flat = new THREE.MeshBasicMaterial({ color: 0x0000ff, flat: true });
         phong = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
-    
-        // material = new THREE.MeshStandardMaterial({
-        //   metalness: 1,   // between 0 and 1
-        //   roughness: 0.7 // between 0 and 1
-        //   // envMap: envMap if there's a environment map, I think like a sky box for reflections
-        // })
+        metal = new THREE.MeshStandardMaterial({ metalness: 1, roughness: 0.7 })
+        // envMap: envMap if there's a environment map, I think like a sky box for reflections
         
         // Like we've discussed => Geometry + Material
         mesh = new THREE.Mesh(geometry, wireframe);
@@ -111,6 +107,9 @@
           currentMaterial = "flat"
           mesh.material = flat
         } else if (currentMaterial == "flat") {
+          currentMaterial = "metal"
+          mesh.material = metal
+        } else if (currentMaterial == "metal") {
           currentMaterial = "wireframe"
           mesh.material = wireframe
         }
