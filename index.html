@@ -12,7 +12,7 @@
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
   <script type="module">
-    var camera, scene, renderer, directionalLight, light, geometry, material, mesh, keyLight, 
+    var camera, scene, renderer, directionalLight, light, geometry, material, texture, mesh, keyLight, 
         fillLight, backLight, controls, wireframe, flat, phong, metal
     
     // State
@@ -49,6 +49,12 @@
         flat = new THREE.MeshBasicMaterial({ color: 0x0000ff, flat: true });
         phong = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
         metal = new THREE.MeshStandardMaterial({ metalness: 1, roughness: 0.7 })
+
+        const textureLoader = new THREE.TextureLoader();
+        const normalTexture = textureLoader.load('./abstract.jpeg')
+        texture = new THREE.MeshStandardMaterial({ metalness: 1, roughness: 0.7 })
+        texture.normalMap = normalTexture;
+
         // envMap: envMap if there's a environment map, I think like a sky box for reflections
         
         // Like we've discussed => Geometry + Material
@@ -114,7 +120,6 @@
         console.log(lightYPos, lightXPos);
       });
     window.addEventListener("click", (event) => {
-        console.log('test');
         if (currentMaterial == "wireframe") {
           currentMaterial = "phong"
           mesh.material = phong
@@ -125,6 +130,9 @@
           currentMaterial = "metal"
           mesh.material = metal
         } else if (currentMaterial == "metal") {
+          currentMaterial = "texture"
+          mesh.material = texture
+        } else if (currentMaterial =="texture") {
           currentMaterial = "wireframe"
           mesh.material = wireframe
         }
