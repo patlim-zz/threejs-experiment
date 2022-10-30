@@ -18,7 +18,7 @@
     // State
     var mouseX = ((window.innerWidth * 7) / 8 - window.innerWidth / 2) / 2 // 'Thoughtful'
     var mouseY = ((window.innerWidth * 1) / 6 - window.innerHeight / 2) / 2 // initial pose
-    var currentMaterial = "wireframe"
+    var currentMaterial = "glass"
     var lightXPos = -100
     var lightYPos = 0
     
@@ -26,7 +26,7 @@
     animate();
     
     function init() {
-        document.getElementById("currentMaterial").innerHTML = "wireframe";
+        document.getElementById("currentMaterial").innerHTML = "glass";
         // Three.js documentation is great
 
         // Here we create a new scene
